@@ -141,10 +141,8 @@ impl<T> Drop for List<T> {
         self.tail.take();
         let mut curr = self.head.take();
         while let Some(node) = curr {
-            curr = Rc::try_unwrap(node).ok().and_then(|node| {
-                node.borrow_mut().prev.take();
-                node.borrow_mut().next.take()
-            });
+            node.borrow_mut().prev.take();
+            curr = node.borrow_mut().next.take();
         }
     }
 }
